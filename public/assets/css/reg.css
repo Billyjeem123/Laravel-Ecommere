@@ -1,0 +1,101 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f1f1f1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+  /* Add this line to center the container horizontally */
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Add this line to center the content horizontally */
+  padding: 12px;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+.alert-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  background-image: url('path/to/danger-icon.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.alert-message {
+  color: #FF4136;
+  text-align: center;
+}
+
+.alert.alert-danger {
+  background-color: #FFD2CF;
+  border: 2px solid #FF4136;
+}
+
+
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+input[type=text],
+input[type=email],
+input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.cancelbtn {
+  background-color: #f44336;
+}
+
+.cancelbtn:hover {
+  background-color: #da190b;
+}
+
+.signup {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup a {
+  color: #4CAF50;
+  text-decoration: none;
+}

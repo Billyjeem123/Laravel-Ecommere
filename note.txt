@@ -1,0 +1,43 @@
+ public function createProduct(Request $productRequest)
+    {
+        $images = $productRequest->file('file');
+        $token =  rand( 100000, 999999 );
+    
+        try {
+            $saveProduct = new Product();
+    
+            $saveProduct->productName = $productRequest->pname;
+            $saveProduct->productQuantity = $productRequest->pquantity;
+            $saveProduct->price = $productRequest->price;
+            $saveProduct->productDesc = $productRequest->desc;
+            $saveProduct->catid = $productRequest->catid;
+            $saveProduct->token = $token;
+    
+            $hasBeenSaved = $saveProduct->save();
+    
+            if (!$hasBeenSaved) {
+                return redirect()->route('productPage')->with('danger', 'Unable to process requests');
+            }
+    
+            foreach ($images as $image) {
+                $newName = uniqid() . '_' . $image->getClientOriginalName();
+                $imageUrl = $_ENV['IMAGE_URL'] . "/$newName";
+                $image->move('uploads', $newName);
+    
+                $newImage = new Image();
+                $newImage->imageName = $newName;
+                $newImage->imageUrl = $imageUrl;
+                $newImage->token = $token;
+    
+                $saveProduct->images()->save($newImage); // Associate the image with the product
+            }
+    
+            return redirect()->route('productPage')->with('success', 'Product uploaded successfully');
+        } catch (\Throwable $e) {
+            return redirect()->route('productPage')->with('danger', 'Error: ' . $e->getMessage());
+        }
+
+
+
+        
+    }
