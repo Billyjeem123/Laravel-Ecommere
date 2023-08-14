@@ -11,6 +11,8 @@ class Cart extends Model
 
     protected $table = 'tblcarts';
 
+    protected $primaryKey = 'token'; // Specify the custom primary key field (token)
+
 
 
     public function products()

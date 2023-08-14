@@ -1,6 +1,10 @@
 @extends('layout.main')
 
 @section('main')
+    <!-- Display cart items here -->
+    
+  
+
     <!-- cart + summary -->
     <section class="bg-light my-5">
         <div class="container">
@@ -10,31 +14,55 @@
                     <div class="card border shadow-0">
                         <div class="m-4">
                             <h4 class="card-title mb-4">Your shopping cart</h4>
+                            @if (session('success'))
+                            <div class="alert alert-success" id="success-alert">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if (session('danger'))
+                            <div class="alert alert-danger" id="danger-alert">
+                                {{ session('danger') }}
+                            </div>
+                        @endif
                             <div class="row gy-3">
+                                <div class="text-center" style="display: flex; ">
+                                    {!! !empty($message) ? "<p class='mb-0 p-3 bg-info text-white rounded'>$message</p>" : '' !!}
+                                </div>
+                               
+                                
+
+
+
+
+
                                 @foreach ($cartitems as $product)
                                     @php
                                         $products = $product->products;
+                                        $quantity = $product->quantity;
                                     @endphp
 
                                     @foreach ($products as $item)
                                         <div class="col-lg-5">
                                             <div class="me-lg-5">
                                                 <div class="d-flex">
-                                                  @if (count($product->productImages) > 0)
-                                                    @php
-                                                        $firstImage = $product->productImages[0];
-                                                        $imageUrl = asset('uploads/' . $firstImage->imageName);
-                                                        $total = 0;
-                                                        $productPrice = (int)$item->price ;
-                                                        $subtotal = $item->productQuantity * $productPrice;
-                                                        $total += $subtotal
-                                                                                                    @endphp
+                                                    @if (count($product->productImages) > 0)
+                                                        @php
+                                                            $firstImage = $product->productImages[0];
+                                                            $imageUrl = asset('uploads/' . $firstImage->imageName);
+                                                            $total = 0;
+                                                            $productPrice = floatval($item->price);
+                                                            $subtotal = $quantity * $productPrice;
+                                                            $total += $subtotal ?? 0;
+                                                        @endphp
                                                         <div class="image-container mb-3">
-                                                        <a href="#" class="d-block" style="position: relative; overflow: hidden;">
-                                                            <img src="{{ $imageUrl }}" class="card-img-top rounded-2 fit-image" alt="Product Image" />
-                                                        </a>
-                                                    </div>
-                                                @endif
+                                                            <a href="#" class="d-block"
+                                                                style="position: relative; overflow: hidden;">
+                                                                <img src="{{ $imageUrl }}"
+                                                                    class="card-img-top rounded-2 fit-image"
+                                                                    alt="Product Image" />
+                                                            </a>
+                                                        </div>
+                                                    @endif
 
 
                                                     <div class="">
@@ -55,19 +83,42 @@
                                                 </select>
                                             </div>
                                             <div class="">
-                                                <small class="text-muted text-nowrap"> {{ $item->price }} / per item
+                                                <small class="text-muted text-nowrap"> @php
+                                                    echo number_format($item->price);
+                                                @endphp
+                                                    / per item
                                                 </small>
                                             </div>
                                         </div>
                                         <div
                                             class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
                                             <div class="float-md-end">
-                                                <a href="javascript:void(0)!"
-                                                    class="btn btn-light border px-2 icon-hover-primary"><i
-                                                        class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
-                                                <a href="javascript:void(0)"
-                                                    class="btn btn-light border text-danger icon-hover-danger"> Remove</a>
+                                                <form action="" method="POST" class="d-inline">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="btn btn-light border px-2 icon-hover-primary">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </form>
+
+                                                <form action="{{ route('removeCart', $product->token) }}" method="POST"
+                                                    class="d-inline">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="btn btn-light border text-danger icon-hover-danger">
+                                                        Remove
+                                                    </button>
+                                                </form>
+
+                                                <form action="{{route('increaseQuant', $product->token)}}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="btn btn-light border px-2 icon-hover-primary">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </form>
                                             </div>
+
                                         </div>
                                     @endforeach
                                 @endforeach
@@ -125,20 +176,19 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <p class="mb-2">Total price:</p>
-                                <p class="mb-2">N {{$total}}</p>
-                            </div>
-                            
+                                <p class="mb-2 fw-bold">N {{ $total ?? 0 }}</p>
 
-                            <hr />
-                            <div class="d-flex justify-content-between">
-                                <p class="mb-2">Total price:</p>
-                                <p class="mb-2 fw-bold">N {{$total}}</p>
                             </div>
 
                             <div class="mt-3">
-                                <a href="javascript:void(0)" class="btn btn-success w-100 shadow-0 mb-2"> Make Purchase </a>
-                                <a href="javascript:void(0)" class="btn btn-light w-100 border mt-2"> Back to shop </a>
+                                @auth
+                                    <a href="javascript:void(0)" class="btn btn-success w-100 shadow-0 mb-2">Make Purchase</a>
+                                    <a href="javascript:void(0)" class="btn btn-light w-100 border mt-2">Back to shop</a>
+                                @else
+                                    <p>Please <a href="">log in</a> to continue with your purchase.</p>
+                                @endauth
                             </div>
+                            
                         </div>
                     </div>
                 </div>

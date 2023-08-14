@@ -61,7 +61,7 @@
                                     <p  style="color: red">{{ $errors->first('price') }}</p>
                                 </div>
                             </div>
-                            <input type="hidden" name="usertoken" value="09">
+                            <input type="hidden" name="usertoken" value="{{auth()->user()->id}}">
 
                             <div class="row mb-3 align-items-center">
                                 <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>

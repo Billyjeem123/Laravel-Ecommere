@@ -11,7 +11,8 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
+    protected $table = 'tblusers';
+    protected $redirectTo = '/adminHomePage';
 
     /**
      * The attributes that are mass assignable.

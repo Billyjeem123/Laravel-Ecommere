@@ -167,6 +167,7 @@
                                 @csrf
                                 <input type="hidden" name="token" value="{{ $product->token }}">
                                 <input type="hidden" name="usertoken" value="123">
+                                <input type="hidden" name="quantity" value="1">
                                 <button type="submit" class="btn btn-outline-primary w-100">Add to Cart</button>
                            
                         </form>

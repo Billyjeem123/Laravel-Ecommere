@@ -44,6 +44,7 @@ class ProductController extends Controller
             $saveProduct->productName = $productRequest->pname;
             $saveProduct->productQuantity = $productRequest->pquantity;
             $saveProduct->price = $productRequest->price;
+            $saveProduct->usertoken =  $productRequest->usertoken;
             $saveProduct->token = $token;
             $saveProduct->productDesc     = $productRequest->desc;
             $saveProduct->catid = $productRequest->catid;
@@ -78,6 +79,7 @@ class ProductController extends Controller
                 $image->move('uploads', $newName);
 
                 $instanciateImage->imageName = $newName;
+               
                 $instanciateImage->imageUrl = $imageUrl;
                 $instanciateImage->token = $token;
                 $isImageSaved = $instanciateImage->save();
